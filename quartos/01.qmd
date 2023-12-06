@@ -1,0 +1,77 @@
+---
+title: "Day 1"
+author: "Sara"
+format: html
+---
+
+```{r}
+library(dplyr)
+library(here)
+```
+
+## Part 1 
+
+load the input data
+```{r}
+input <- data.table::fread(here("data", "01_input.txt"), header = FALSE)
+```
+
+```{r}
+input <- input |> 
+  mutate(first_number = stringr::str_extract(V1, "([:digit:])"),
+         last_number = stringr::str_extract(stringi::stri_reverse(V1),
+                                            "([:digit:])"),
+         two_numbers = as.numeric(paste0(first_number, last_number)))
+```
+
+calculate the sum
+```{r}
+sum(input$two_numbers)
+```
+
+that's right :-)
+
+## Part 2
+
+```{r}
+input <- input |> 
+  mutate(
+    V2 = V1,
+    V2 = if_else(stringr::str_detect(V2, "one"), 
+                 stringr::str_replace_all(V2, "one", "1"),
+                 V2),
+    V2 = if_else(stringr::str_detect(V2, "two"),
+                 stringr::str_replace_all(V2, "two", "2"),
+                 V2),
+    V2 = if_else(stringr::str_detect(V2, "three"),
+                 stringr::str_replace_all(V2, "three", "3"),
+                 V2),
+    V2 = if_else(stringr::str_detect(V2, "four"),
+                 stringr::str_replace_all(V2, "four", "4"),
+                 V2),
+    V2 = if_else(stringr::str_detect(V2, "five"),
+                 stringr::str_replace_all(V2, "five", "5"),
+                 V2),
+    V2 = if_else(stringr::str_detect(V2, "six"),
+                 stringr::str_replace_all(V2, "six", "6"),
+                 V2),
+    V2 = if_else(stringr::str_detect(V2, "seven"),
+                 stringr::str_replace_all(V2, "seven", "7"),
+                 V2),
+    V2 = if_else(stringr::str_detect(V2, "eight"),
+                 stringr::str_replace_all(V2, "eight", "8"),
+                 V2),
+    V2 = if_else(stringr::str_detect(V2, "nine"),
+                 stringr::str_replace_all(V2, "nine", "9"),
+                 V2),
+  first_number = stringr::str_extract(V2, "([:digit:])"),
+  last_number = stringr::str_extract(stringi::stri_reverse(V2),
+                                     "([:digit:])"),
+  two_numbers = as.numeric(paste0(first_number, last_number)))
+```
+
+```{r}
+sum(input$two_numbers)
+```
+
+apparently this is not right? not sure what I am doing wrong...
